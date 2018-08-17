@@ -12,10 +12,10 @@
 * First setup your database connection. The Spring JPA project "knows" to look for it in a specific location.
 * Create a folder under src > main > "resources".
 * In that newly created resources folder create a file called application.properties. In that file add these settings. Make sure there are no spaces at the end of each line!:
-** spring.jpa.hibernate.ddl-auto=update
-** spring.datasource.url=jdbc:mysql://localhost:3306/capstone
-** spring.datasource.username=root
-** spring.datasource.password=
+   * spring.jpa.hibernate.ddl-auto=update
+   * spring.datasource.url=jdbc:mysql://localhost:3306/capstone
+   * spring.datasource.username=root
+   * spring.datasource.password=
 * Find the main class called "LaRocheChemAssessmentRestfulApp.java" a successful run creates output similar to...
 
  2017-12-04 20:43:00.153  INFO 5824 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : __Tomcat started on port(s): 8080__ (http)
