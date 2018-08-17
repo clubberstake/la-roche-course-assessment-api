@@ -10,27 +10,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class SemesterReview {
+public class CourseAssessmentForm {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "student_id")
-	private Student student;
-
+	
+	private String courseNumber;
+	private String courseName;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "class_id")
 	private Classes classes;
 	
 	@Embedded
-	private SemesterLearningIssues semesterLearningIssues;
+	private SectionOne sectionOne;
 	
-	private SemesterPartition semesterPartiton;
-	private String semesterInstructorInteractions;
-	private String semesterInstructorNotes;
-
-	public SemesterReview() {
-	}
-
+	@Embedded
+	private SectionTwo sectionTwo;
+	
 }

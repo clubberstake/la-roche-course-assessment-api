@@ -37,9 +37,9 @@ public class SemesterReviewController {
 	@Autowired
 	private StudentRepository studentRepository;
 
-	public ArrayList<SemesterReviewResponse> getCourseInfoForAssessmentWorksheet4() {
-		return getMidSemesterReview();
-	}
+//	public ArrayList<SemesterReviewResponse> getCourseInfoForAssessmentWorksheet4() {
+//		return getMidSemesterReview();
+//	}
 
 	/**
 	 * Put request to update currently placed semester review
@@ -47,256 +47,256 @@ public class SemesterReviewController {
 	 * @param request the semester review request object to be updated/added
 	 * @return response URI path
 	 */
-	@PutMapping("/putReview")
-	public ResponseEntity<Void> putMidSemesterReview(@RequestBody SemesterReviewRequest request) {
-		SemesterReview review = findSemeterReviewByClassAndStudent(request.getClassId(), request.getStudentId());
-		if (review != null) {
-			review.setMliCoursePace(request.getMliCoursePace());
-			review.setMliLackOfMindset(request.getMliLackOfMindset());
-			review.setMliLackOfInterestCuriousity(request.getMliLackOfInterestCuriousity());
-			review.setMliLackOfEffortFocus(request.getMliLackOfEffortFocus());
-			review.setMliPoorTimeManagement(request.getMliPoorTimeManagement());
-			review.setMliHealthIssues(request.getMliHealthIssues());
-			review.setMliComplacence(request.getMliComplacence());
-			review.setMliEmploymentHours(request.getMliEmploymentHours());
-			review.setMliOther(request.getMliOther());
-			review.setMliOtherIssues(request.getMliOtherIssues());
-			review.setEsliCoursePace(request.getEsliCoursePace());
-			review.setEsliPoorTimeManagement(request.getEsliPoorTimeManagement());
-			review.setEsliHealthIssues(request.getEsliHealthIssues());
-			review.setEsliComplacence(request.getEsliComplacence());
-			review.setEsliEmploymentHours(request.getEsliEmploymentHours());
-			review.setEsliOther(request.getEsliOther());
-			review.setEsliotherIssues(request.getEsliotherIssues());
-			review.setMidSemesterExtentInstructor(request.getMidSemesterExtentInstructor());
-			review.setMidSemesterExtentInstructor(request.getEndSemesterExtentInstructor());
-			review.setMidSemesterInstructorRecommendations(request.getMidSemesterInstructorRecommendations());
-			review.setEndSemesterInstructorRecommendations(request.getEndSemesterInstructorRecommendations());
-		} else {
-
-			Student student = studentRepository.findById(request.getStudentId()).orElse(null);
-			Classes classes = classRepository.findById(request.getClassId()).orElse(null);
-			review = new SemesterReview(student, classes, request.getMliCoursePace(), request.getMliLackOfMindset(),
-					request.getMliLackOfInterestCuriousity(), request.getMliLackOfEffortFocus(),
-					request.getMliPoorTimeManagement(), request.getMliHealthIssues(), request.getMliComplacence(),
-					request.getMliEmploymentHours(), request.getMliOther(), request.getMliOtherIssues(),
-					request.getEsliCoursePace(), request.getEsliLackOfMindset(),
-					request.getEsliLackOfInterestCuriosity(), request.getEsliPoorTimeManagement(),
-					request.getEsliHealthIssues(), request.getEsliComplacence(), request.getEsliEmploymentHours(),
-					request.getEsliOther(), request.getEsliotherIssues(), request.getMidSemesterExtentInstructor(),
-					request.getEndSemesterExtentInstructor(), request.getMidSemesterInstructorRecommendations(),
-					request.getEndSemesterInstructorRecommendations());
-		}
-		semesterReviewRepository.save(review);
-
-		try {
-			return ResponseEntity.created(new URI("/semesterEntry/" + review.getID())).build();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
-	}
-
-	/**
-	 * Post request to add a newly created course semester review
-	 * 
-	 * @param request the course semester review request object to be added
-	 * @return response URI path
-	 */
-
-	// fix this
-	// ############################################################################################
-	@PostMapping("/putCourseReview")
-	public ResponseEntity<Void> putCourseSemesterReview(@RequestBody CourseSemesterReviewRequest request) {
-		// console test
-		String x = request.getClassId() + " " + request.getStudentId() + " " + request.getStudentName();
-		System.out.println(x);
-
-		SemesterReview review = findSemeterReviewByClassAndStudent(request.getClassId(), request.getStudentId());
-		if (review != null) {
-			review.setMliCoursePace(request.getMliCoursePace());
-			review.setMliLackOfMindset(request.getMliLackOfMindset());
-			review.setMliLackOfInterestCuriousity(request.getMliLackOfInterestCuriousity());
-			review.setMliLackOfEffortFocus(request.getMliLackOfEffortFocus());
-			review.setMliPoorTimeManagement(request.getMliPoorTimeManagement());
-			review.setMliHealthIssues(request.getMliHealthIssues());
-			review.setMliComplacence(request.getMliComplacence());
-			review.setMliEmploymentHours(request.getMliEmploymentHours());
-			review.setMliOther(request.getMliOther());
-			review.setMliOtherIssues(request.getMliOtherIssues());
-			review.setEsliCoursePace(request.getEsliCoursePace());
-			review.setEsliPoorTimeManagement(request.getEsliPoorTimeManagement());
-			review.setEsliHealthIssues(request.getEsliHealthIssues());
-			review.setEsliComplacence(request.getEsliComplacence());
-			review.setEsliEmploymentHours(request.getEsliEmploymentHours());
-			review.setEsliOther(request.getEsliOther());
-			review.setEsliotherIssues(request.getEsliotherIssues());
-			review.setMidSemesterExtentInstructor(request.getMidSemesterExtentInstructor());
-			review.setMidSemesterExtentInstructor(request.getEndSemesterExtentInstructor());
-			review.setMidSemesterInstructorRecommendations(request.getMidSemesterInstructorRecommendations());
-			review.setEndSemesterInstructorRecommendations(request.getEndSemesterInstructorRecommendations());
-		} else {
-			Student student = studentRepository.findById(request.getStudentId()).orElse(null);
-			Classes classes = classRepository.findById(request.getClassId()).orElse(null);
-			review = new SemesterReview(student, classes, request.getMliCoursePace(), request.getMliLackOfMindset(),
-					request.getMliLackOfInterestCuriousity(), request.getMliLackOfEffortFocus(),
-					request.getMliPoorTimeManagement(), request.getMliHealthIssues(), request.getMliComplacence(),
-					request.getMliEmploymentHours(), request.getMliOther(), request.getMliOtherIssues(),
-					request.getEsliCoursePace(), request.getEsliLackOfMindset(),
-					request.getEsliLackOfInterestCuriosity(), request.getEsliPoorTimeManagement(),
-					request.getEsliHealthIssues(), request.getEsliComplacence(), request.getEsliEmploymentHours(),
-					request.getEsliOther(), request.getEsliotherIssues(), request.getMidSemesterExtentInstructor(),
-					request.getEndSemesterExtentInstructor(), request.getMidSemesterInstructorRecommendations(),
-					request.getEndSemesterInstructorRecommendations());
-		}
-
-		semesterReviewRepository.save(review);
-
-		try {
-			return ResponseEntity.created(new URI("/courseSemesterEntry/" + review.getID())).build();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
-	}
-
-	private SemesterReview findSemeterReviewByClassAndStudent(long classId, long studentId) {
-		List<SemesterReview> reviews = semesterReviewRepository.findByClassesIdAndStudentId(classId, studentId);
-		if (!reviews.isEmpty()) {
-			return reviews.get(0);
-		}
-		return null;
-	}
-
-	@GetMapping("/semesterReviews")
-	private ArrayList<SemesterReviewResponse> getMidSemesterReview() {
-
-		List<SemesterReview> reviews = semesterReviewRepository.findAll();
-		List<Student> students = studentRepository.findAll();
-		List<Classes> classes = classRepository.findAll();
-		if (!(reviews.iterator().hasNext() || students.iterator().hasNext() || classes.iterator().hasNext())) {
-			SemesterReview item = new SemesterReview();
-			item.setMidSemesterExtentInstructor("Teacher");
-			item.setEndSemesterExtentInstructor("Another Teacher");
-			item.setMidSemesterInstructorRecommendations("Do better bro");
-			item.setEndSemesterInstructorRecommendations("You did better");
-			item.setMliCoursePace(true);
-			item.setMliLackOfMindset(true);
-			item.setMliLackOfInterestCuriousity(true);
-			item.setMliLackOfEffortFocus(true);
-			item.setMliPoorTimeManagement(true);
-			item.setMliHealthIssues(true);
-			item.setMliComplacence(true);
-			item.setMliEmploymentHours(true);
-			item.setMliOther(true);
-			item.setMliOtherIssues("so many issues");
-			item.setEsliCoursePace(true);
-			item.setEsliPoorTimeManagement(true);
-			item.setEsliHealthIssues(true);
-			item.setEsliComplacence(true);
-			item.setEsliEmploymentHours(true);
-			item.setEsliOther(true);
-			item.setEsliotherIssues("so many issues");
-			item.setStudentID(studentRepository.findById((long) 1).orElse(null));
-			item.setClassesID(classRepository.findById((long) 3).orElse(null));
-			semesterReviewRepository.save(item);
-			reviews = semesterReviewRepository.findAll();
-		}
-
-		ArrayList<SemesterReviewResponse> midSemesterData = new ArrayList<>();
-		for (SemesterReview review : reviews) {
-			midSemesterData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
-					review.getMliCoursePace(), review.getMliLackOfMindset(), review.getMliLackOfInterestCuriousity(),
-					review.getMliLackOfEffortFocus(), review.getMliPoorTimeManagement(), review.getMliHealthIssues(),
-					review.getMliComplacence(), review.getMliEmploymentHours(), review.getMliOther(),
-					review.getMliOtherIssues(), review.getEsliCoursePace(), review.getEsliLackOfMindset(),
-					review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
-					review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
-					review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
-					review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
-					review.getEndSemesterInstructorRecommendations()));
-		}
-		return midSemesterData;
-	}
-
-	@GetMapping("/semesterReviews/studentId={studentId}")
-	public ArrayList<SemesterReviewResponse> getReviewInfo(@PathVariable int studentId) {
-		Student student = studentRepository.findById((long) studentId).orElse(null);
-		List<SemesterReview> reviews = semesterReviewRepository.findByStudentId(student.getId());
-		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
-		for (SemesterReview review : reviews) {
-			if (review.getStudentID().getId() == student.getId()) {
-				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
-						review.getMliCoursePace(), review.getMliLackOfMindset(),
-						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
-						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
-						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
-						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
-						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
-						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
-						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
-						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
-						review.getEndSemesterInstructorRecommendations()));
-			}
-		}
-		return reviewData;
-	}
-
-	/**
-	 * Obtain a list of semester review info by class Id
-	 * 
-	 * @param classId course id from URL
-	 * @return list of semester reviews
-	 */
-	@GetMapping("/semesterReviews/classId={classId}")
-	public ArrayList<SemesterReviewResponse> getReviewInfoByClassId(@PathVariable int classId) {
-		Classes classes = classRepository.findById((long) classId).orElse(null);
-		List<SemesterReview> reviews = semesterReviewRepository.findByClassesId(classes.getId());
-		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
-
-		for (SemesterReview review : reviews) {
-			if (review.getClassesID().getId() == classes.getId()) {
-				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
-						review.getMliCoursePace(), review.getMliLackOfMindset(),
-						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
-						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
-						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
-						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
-						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
-						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
-						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
-						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
-						review.getEndSemesterInstructorRecommendations()));
-			}
-		}
-		return reviewData;
-	}
-
-	@GetMapping("/semesterReviews/courseId={courseId}/studentId={studentId}")
-	public ArrayList<SemesterReviewResponse> getReviewRequestInfoByCourseId(@PathVariable int courseId,
-			@PathVariable int studentId) {
-		List<Classes> classes = classRepository.findByCourseId((long) courseId);
-		Student student = studentRepository.findById((long) studentId).orElse(null);
-
-		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
-
-		SemesterReview review = findSemeterReviewByClassAndStudent(classes.get(0).getId(), student.getId());
-
-		if (review != null) {
-			if (review.getClassesID().getCourseId() == classes.get(0).getCourseId()) {
-				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
-						review.getMliCoursePace(), review.getMliLackOfMindset(),
-						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
-						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
-						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
-						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
-						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
-						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
-						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
-						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
-						review.getEndSemesterInstructorRecommendations()));
-			}
-		}
-		return reviewData;
-	}
+//	@PutMapping("/putReview")
+//	public ResponseEntity<Void> putMidSemesterReview(@RequestBody SemesterReviewRequest request) {
+//		SemesterReview review = findSemeterReviewByClassAndStudent(request.getClassId(), request.getStudentId());
+//		if (review != null) {
+//			review.setMliCoursePace(request.getMliCoursePace());
+//			review.setMliLackOfMindset(request.getMliLackOfMindset());
+//			review.setMliLackOfInterestCuriousity(request.getMliLackOfInterestCuriousity());
+//			review.setMliLackOfEffortFocus(request.getMliLackOfEffortFocus());
+//			review.setMliPoorTimeManagement(request.getMliPoorTimeManagement());
+//			review.setMliHealthIssues(request.getMliHealthIssues());
+//			review.setMliComplacence(request.getMliComplacence());
+//			review.setMliEmploymentHours(request.getMliEmploymentHours());
+//			review.setMliOther(request.getMliOther());
+//			review.setMliOtherIssues(request.getMliOtherIssues());
+//			review.setEsliCoursePace(request.getEsliCoursePace());
+//			review.setEsliPoorTimeManagement(request.getEsliPoorTimeManagement());
+//			review.setEsliHealthIssues(request.getEsliHealthIssues());
+//			review.setEsliComplacence(request.getEsliComplacence());
+//			review.setEsliEmploymentHours(request.getEsliEmploymentHours());
+//			review.setEsliOther(request.getEsliOther());
+//			review.setEsliotherIssues(request.getEsliotherIssues());
+//			review.setMidSemesterExtentInstructor(request.getMidSemesterExtentInstructor());
+//			review.setMidSemesterExtentInstructor(request.getEndSemesterExtentInstructor());
+//			review.setMidSemesterInstructorRecommendations(request.getMidSemesterInstructorRecommendations());
+//			review.setEndSemesterInstructorRecommendations(request.getEndSemesterInstructorRecommendations());
+//		} else {
+//
+//			Student student = studentRepository.findById(request.getStudentId()).orElse(null);
+//			Classes classes = classRepository.findById(request.getClassId()).orElse(null);
+//			review = new SemesterReview(student, classes, request.getMliCoursePace(), request.getMliLackOfMindset(),
+//					request.getMliLackOfInterestCuriousity(), request.getMliLackOfEffortFocus(),
+//					request.getMliPoorTimeManagement(), request.getMliHealthIssues(), request.getMliComplacence(),
+//					request.getMliEmploymentHours(), request.getMliOther(), request.getMliOtherIssues(),
+//					request.getEsliCoursePace(), request.getEsliLackOfMindset(),
+//					request.getEsliLackOfInterestCuriosity(), request.getEsliPoorTimeManagement(),
+//					request.getEsliHealthIssues(), request.getEsliComplacence(), request.getEsliEmploymentHours(),
+//					request.getEsliOther(), request.getEsliotherIssues(), request.getMidSemesterExtentInstructor(),
+//					request.getEndSemesterExtentInstructor(), request.getMidSemesterInstructorRecommendations(),
+//					request.getEndSemesterInstructorRecommendations());
+//		}
+//		semesterReviewRepository.save(review);
+//
+//		try {
+//			return ResponseEntity.created(new URI("/semesterEntry/" + review.getID())).build();
+//		} catch (URISyntaxException e) {
+//			e.printStackTrace();
+//			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//		}
+//	}
+//
+//	/**
+//	 * Post request to add a newly created course semester review
+//	 * 
+//	 * @param request the course semester review request object to be added
+//	 * @return response URI path
+//	 */
+//
+//	// fix this
+//	// ############################################################################################
+//	@PostMapping("/putCourseReview")
+//	public ResponseEntity<Void> putCourseSemesterReview(@RequestBody CourseSemesterReviewRequest request) {
+//		// console test
+//		String x = request.getClassId() + " " + request.getStudentId() + " " + request.getStudentName();
+//		System.out.println(x);
+//
+//		SemesterReview review = findSemeterReviewByClassAndStudent(request.getClassId(), request.getStudentId());
+//		if (review != null) {
+//			review.setMliCoursePace(request.getMliCoursePace());
+//			review.setMliLackOfMindset(request.getMliLackOfMindset());
+//			review.setMliLackOfInterestCuriousity(request.getMliLackOfInterestCuriousity());
+//			review.setMliLackOfEffortFocus(request.getMliLackOfEffortFocus());
+//			review.setMliPoorTimeManagement(request.getMliPoorTimeManagement());
+//			review.setMliHealthIssues(request.getMliHealthIssues());
+//			review.setMliComplacence(request.getMliComplacence());
+//			review.setMliEmploymentHours(request.getMliEmploymentHours());
+//			review.setMliOther(request.getMliOther());
+//			review.setMliOtherIssues(request.getMliOtherIssues());
+//			review.setEsliCoursePace(request.getEsliCoursePace());
+//			review.setEsliPoorTimeManagement(request.getEsliPoorTimeManagement());
+//			review.setEsliHealthIssues(request.getEsliHealthIssues());
+//			review.setEsliComplacence(request.getEsliComplacence());
+//			review.setEsliEmploymentHours(request.getEsliEmploymentHours());
+//			review.setEsliOther(request.getEsliOther());
+//			review.setEsliotherIssues(request.getEsliotherIssues());
+//			review.setMidSemesterExtentInstructor(request.getMidSemesterExtentInstructor());
+//			review.setMidSemesterExtentInstructor(request.getEndSemesterExtentInstructor());
+//			review.setMidSemesterInstructorRecommendations(request.getMidSemesterInstructorRecommendations());
+//			review.setEndSemesterInstructorRecommendations(request.getEndSemesterInstructorRecommendations());
+//		} else {
+//			Student student = studentRepository.findById(request.getStudentId()).orElse(null);
+//			Classes classes = classRepository.findById(request.getClassId()).orElse(null);
+//			review = new SemesterReview(student, classes, request.getMliCoursePace(), request.getMliLackOfMindset(),
+//					request.getMliLackOfInterestCuriousity(), request.getMliLackOfEffortFocus(),
+//					request.getMliPoorTimeManagement(), request.getMliHealthIssues(), request.getMliComplacence(),
+//					request.getMliEmploymentHours(), request.getMliOther(), request.getMliOtherIssues(),
+//					request.getEsliCoursePace(), request.getEsliLackOfMindset(),
+//					request.getEsliLackOfInterestCuriosity(), request.getEsliPoorTimeManagement(),
+//					request.getEsliHealthIssues(), request.getEsliComplacence(), request.getEsliEmploymentHours(),
+//					request.getEsliOther(), request.getEsliotherIssues(), request.getMidSemesterExtentInstructor(),
+//					request.getEndSemesterExtentInstructor(), request.getMidSemesterInstructorRecommendations(),
+//					request.getEndSemesterInstructorRecommendations());
+//		}
+//
+//		semesterReviewRepository.save(review);
+//
+//		try {
+//			return ResponseEntity.created(new URI("/courseSemesterEntry/" + review.getID())).build();
+//		} catch (URISyntaxException e) {
+//			e.printStackTrace();
+//			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//		}
+//	}
+//
+//	private SemesterReview findSemeterReviewByClassAndStudent(long classId, long studentId) {
+//		List<SemesterReview> reviews = semesterReviewRepository.findByClassesIdAndStudentId(classId, studentId);
+//		if (!reviews.isEmpty()) {
+//			return reviews.get(0);
+//		}
+//		return null;
+//	}
+//
+//	@GetMapping("/semesterReviews")
+//	private ArrayList<SemesterReviewResponse> getMidSemesterReview() {
+//
+//		List<SemesterReview> reviews = semesterReviewRepository.findAll();
+//		List<Student> students = studentRepository.findAll();
+//		List<Classes> classes = classRepository.findAll();
+//		if (!(reviews.iterator().hasNext() || students.iterator().hasNext() || classes.iterator().hasNext())) {
+//			SemesterReview item = new SemesterReview();
+//			item.setMidSemesterExtentInstructor("Teacher");
+//			item.setEndSemesterExtentInstructor("Another Teacher");
+//			item.setMidSemesterInstructorRecommendations("Do better bro");
+//			item.setEndSemesterInstructorRecommendations("You did better");
+//			item.setMliCoursePace(true);
+//			item.setMliLackOfMindset(true);
+//			item.setMliLackOfInterestCuriousity(true);
+//			item.setMliLackOfEffortFocus(true);
+//			item.setMliPoorTimeManagement(true);
+//			item.setMliHealthIssues(true);
+//			item.setMliComplacence(true);
+//			item.setMliEmploymentHours(true);
+//			item.setMliOther(true);
+//			item.setMliOtherIssues("so many issues");
+//			item.setEsliCoursePace(true);
+//			item.setEsliPoorTimeManagement(true);
+//			item.setEsliHealthIssues(true);
+//			item.setEsliComplacence(true);
+//			item.setEsliEmploymentHours(true);
+//			item.setEsliOther(true);
+//			item.setEsliotherIssues("so many issues");
+//			item.setStudentID(studentRepository.findById((long) 1).orElse(null));
+//			item.setClassesID(classRepository.findById((long) 3).orElse(null));
+//			semesterReviewRepository.save(item);
+//			reviews = semesterReviewRepository.findAll();
+//		}
+//
+//		ArrayList<SemesterReviewResponse> midSemesterData = new ArrayList<>();
+//		for (SemesterReview review : reviews) {
+//			midSemesterData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
+//					review.getMliCoursePace(), review.getMliLackOfMindset(), review.getMliLackOfInterestCuriousity(),
+//					review.getMliLackOfEffortFocus(), review.getMliPoorTimeManagement(), review.getMliHealthIssues(),
+//					review.getMliComplacence(), review.getMliEmploymentHours(), review.getMliOther(),
+//					review.getMliOtherIssues(), review.getEsliCoursePace(), review.getEsliLackOfMindset(),
+//					review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
+//					review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
+//					review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
+//					review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
+//					review.getEndSemesterInstructorRecommendations()));
+//		}
+//		return midSemesterData;
+//	}
+//
+//	@GetMapping("/semesterReviews/studentId={studentId}")
+//	public ArrayList<SemesterReviewResponse> getReviewInfo(@PathVariable int studentId) {
+//		Student student = studentRepository.findById((long) studentId).orElse(null);
+//		List<SemesterReview> reviews = semesterReviewRepository.findByStudentId(student.getId());
+//		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
+//		for (SemesterReview review : reviews) {
+//			if (review.getStudentID().getId() == student.getId()) {
+//				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
+//						review.getMliCoursePace(), review.getMliLackOfMindset(),
+//						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
+//						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
+//						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
+//						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
+//						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
+//						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
+//						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
+//						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
+//						review.getEndSemesterInstructorRecommendations()));
+//			}
+//		}
+//		return reviewData;
+//	}
+//
+//	/**
+//	 * Obtain a list of semester review info by class Id
+//	 * 
+//	 * @param classId course id from URL
+//	 * @return list of semester reviews
+//	 */
+//	@GetMapping("/semesterReviews/classId={classId}")
+//	public ArrayList<SemesterReviewResponse> getReviewInfoByClassId(@PathVariable int classId) {
+//		Classes classes = classRepository.findById((long) classId).orElse(null);
+//		List<SemesterReview> reviews = semesterReviewRepository.findByClassesId(classes.getId());
+//		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
+//
+//		for (SemesterReview review : reviews) {
+//			if (review.getClassesID().getId() == classes.getId()) {
+//				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
+//						review.getMliCoursePace(), review.getMliLackOfMindset(),
+//						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
+//						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
+//						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
+//						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
+//						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
+//						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
+//						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
+//						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
+//						review.getEndSemesterInstructorRecommendations()));
+//			}
+//		}
+//		return reviewData;
+//	}
+//
+//	@GetMapping("/semesterReviews/courseId={courseId}/studentId={studentId}")
+//	public ArrayList<SemesterReviewResponse> getReviewRequestInfoByCourseId(@PathVariable int courseId,
+//			@PathVariable int studentId) {
+//		List<Classes> classes = classRepository.findByCourseId((long) courseId);
+//		Student student = studentRepository.findById((long) studentId).orElse(null);
+//
+//		ArrayList<SemesterReviewResponse> reviewData = new ArrayList<>();
+//
+//		SemesterReview review = findSemeterReviewByClassAndStudent(classes.get(0).getId(), student.getId());
+//
+//		if (review != null) {
+//			if (review.getClassesID().getCourseId() == classes.get(0).getCourseId()) {
+//				reviewData.add(new SemesterReviewResponse(review.getStudentID(), review.getClassesID(),
+//						review.getMliCoursePace(), review.getMliLackOfMindset(),
+//						review.getMliLackOfInterestCuriousity(), review.getMliLackOfEffortFocus(),
+//						review.getMliPoorTimeManagement(), review.getMliHealthIssues(), review.getMliComplacence(),
+//						review.getMliEmploymentHours(), review.getMliOther(), review.getMliOtherIssues(),
+//						review.getEsliCoursePace(), review.getEsliLackOfMindset(),
+//						review.getEsliLackOfInterestCuriosity(), review.getEsliPoorTimeManagement(),
+//						review.getEsliHealthIssues(), review.getEsliComplacence(), review.getEsliEmploymentHours(),
+//						review.getEsliOther(), review.getEsliotherIssues(), review.getMidSemesterExtentInstructor(),
+//						review.getEndSemesterExtentInstructor(), review.getMidSemesterInstructorRecommendations(),
+//						review.getEndSemesterInstructorRecommendations()));
+//			}
+//		}
+//		return reviewData;
+//	}
 }
