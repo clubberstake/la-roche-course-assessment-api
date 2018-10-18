@@ -47,26 +47,10 @@ public class CourseAssessment {
 
 	@OneToMany(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "midSemesterReview_id")
-	private Set <SemesterReview> midSemesterReview;
+	private Set<SemesterReview> midSemesterReview;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set <SemesterReview> endSemesterReview;
-
-	private CourseSLOs getCourseSLOs() {
-		return courseSLOs;
-	}
-
-	private void setCourseSLOs(CourseSLOs courseSLOs) {
-		this.courseSLOs = courseSLOs;
-	}
-
-	private CourseInformation getCourseInformation() {
-		return courseInformation;
-	}
-
-	private void setCourseInformation(CourseInformation courseInformation) {
-		this.courseInformation = courseInformation;
-	}
+	private Set<SemesterReview> endSemesterReview;
 
 	public Cafs1Info getCafs1Info() {
 		return cafs1Info;
@@ -84,14 +68,6 @@ public class CourseAssessment {
 		this.cafs2Info = cafs2Info;
 	}
 
-	private Cafs3Info getCafs3Info() {
-		return cafs3Info;
-	}
-
-	private void setCafs3Info(Cafs3Info cafs3Info) {
-		this.cafs3Info = cafs3Info;
-	}
-
 	public Set<SemesterReview> getMidSemesterReview() {
 		return midSemesterReview;
 	}
@@ -106,6 +82,46 @@ public class CourseAssessment {
 
 	public void setEndSemesterReview(Set<SemesterReview> endSemesterReview) {
 		this.endSemesterReview = endSemesterReview;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Cafs6Info getCafs6Info() {
+		return cafs6Info;
+	}
+
+	public void setCafs6Info(Cafs6Info cafs6Info) {
+		this.cafs6Info = cafs6Info;
+	}
+
+	public Cafs3Info getCafs3Info() {
+		return cafs3Info;
+	}
+
+	public void setCafs3Info(Cafs3Info cafs3Info) {
+		this.cafs3Info = cafs3Info;
+	}
+
+	public CourseInformation getCourseInformation() {
+		return courseInformation;
+	}
+
+	public void setCourseInformation(CourseInformation courseInformation) {
+		this.courseInformation = courseInformation;
+	}
+
+	public CourseSLOs getCourseSLOs() {
+		return courseSLOs;
+	}
+
+	public void setCourseSLOs(CourseSLOs courseSLOs) {
+		this.courseSLOs = courseSLOs;
 	}
 
 //	public courseInformation: CourseInformation, public courseSLOs: CourseSLOs, public cafs1Info: Cafs1Info, public cafs2Info: Cafs2Info,
