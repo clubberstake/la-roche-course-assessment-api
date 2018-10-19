@@ -57,4 +57,20 @@ public class SemesterReview {
 		this.grade = grade;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public SemesterLearningIssues getSemesterLearningIssues() {
+		return semesterLearningIssues;
+	}
+
+	public void setSemesterLearningIssues(SemesterLearningIssues semesterLearningIssues) {
+		this.semesterLearningIssues = semesterLearningIssues;
+	}
+
 }

@@ -1,6 +1,7 @@
 package laroche.chem.assessment.dataModel;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,9 @@ public class Student {
 	private String studentHousingStatus;
 	private String studentHonors;
 	private String internationalStudent;
+
+	@Column(unique = true)
+	private String emailAddress;
 
 	private String time;
 	private String author;
@@ -134,6 +138,14 @@ public class Student {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 }
