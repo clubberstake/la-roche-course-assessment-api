@@ -23,6 +23,7 @@ public class CourseInformation {
 	private FileStorage syllabus;
 
 	private String semester;
+	private String year;
 	private String courseNumberAndSection;
 	private String courseTitle;
 
@@ -76,5 +77,13 @@ public class CourseInformation {
 
 	public void setInstructor(Instructor instructor) {
 		this.instructor = instructor;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 }

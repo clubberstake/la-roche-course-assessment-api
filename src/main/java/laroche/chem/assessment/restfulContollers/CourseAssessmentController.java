@@ -118,9 +118,4 @@ public class CourseAssessmentController {
 		courseAssessmentRepository.save(editable.get());
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
-
-	private CourseAssessment generateFakeData() {
-		return null;
-	}
-
 }

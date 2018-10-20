@@ -61,40 +61,42 @@ public class CourseInformationController {
 		}
 	}
 
-	@PostMapping("/instructor")
-	public ResponseEntity<Void> addInstructor(@RequestBody Instructor instructor) {
-		instructorRepository.save(instructor);
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
-
-	@PutMapping("/instructor")
-	public ResponseEntity<Void> updateInstructor(@RequestBody Instructor instructor) {
-
-		try {
-			updateInstructorInDB(instructor);
-			return ResponseEntity.status(HttpStatus.OK).build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-	}
-
-	private Instructor updateInstructorInDB(Instructor instructor) {
-		Optional<Instructor> editable = instructorRepository.findById(instructor.getId());
-		if (editable.isPresent()) {
-			editable.get().setName(instructor.getName());
-			instructorRepository.save(editable.get());
-		}
-
-		return editable.get();
-	}
+//	@PostMapping("/instructor")
+//	public ResponseEntity<Void> addInstructor(@RequestBody Instructor instructor) {
+//		instructorRepository.save(instructor);
+//		return ResponseEntity.status(HttpStatus.OK).build();
+//	}
+//
+//	@PutMapping("/instructor")
+//	public ResponseEntity<Void> updateInstructor(@RequestBody Instructor instructor) {
+//
+//		try {
+//			updateInstructorInDB(instructor);
+//			return ResponseEntity.status(HttpStatus.OK).build();
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//		}
+//	}
+//
+//	private Instructor updateInstructorInDB(Instructor instructor) {
+//		Optional<Instructor> editable = instructorRepository.findById(instructor.getId());
+//		if (editable.isPresent()) {
+//			editable.get().setName(instructor.getName());
+//			instructorRepository.save(editable.get());
+//		}
+//
+//		return editable.get();
+//	}
 
 	private List<CourseInformation> generateFakeData() {
 		List<CourseInformation> courses = new ArrayList<CourseInformation>();
 		CourseInformation course = new CourseInformation();
 		course.setcourseNumberAndSection("CHEM2016");
 		course.setCourseTitle("Organic Chemistry II Lecture");
-		course.setSemester("Fall 2018");
+		course.setSemester("Fall");
+		course.setYear("2018");
 		Instructor instructor = new Instructor();
+		instructor.setEmailAddress("don.fujito@laroche.edu");
 		instructor.setName("Dr. D.T. Fujito, Professor/Chair of Chemistry");
 		course.setInstructor(instructor);
 		courses.add(course);
@@ -102,8 +104,10 @@ public class CourseInformationController {
 		course = new CourseInformation();
 		course.setcourseNumberAndSection("CSCI4096");
 		course.setCourseTitle("Capstone I");
-		course.setSemester("Fall 2018");
+		course.setSemester("Fall");
+		course.setYear("2018");
 		instructor = new Instructor();
+		instructor.setEmailAddress("jeff.perdue@laroche.edu");
 		instructor.setName("Mr. Jeffery Perdue");
 		course.setInstructor(instructor);
 		courses.add(course);
