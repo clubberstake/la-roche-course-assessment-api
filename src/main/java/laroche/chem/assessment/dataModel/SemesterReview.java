@@ -24,7 +24,7 @@ public class SemesterReview {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "class_id")
-	private CourseInformation classes;
+	private CourseInformation courseInformation;
 	
 	@Embedded
 	private SemesterLearningIssues semesterLearningIssues;
@@ -71,6 +71,22 @@ public class SemesterReview {
 
 	public void setSemesterLearningIssues(SemesterLearningIssues semesterLearningIssues) {
 		this.semesterLearningIssues = semesterLearningIssues;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public CourseInformation getCourseInformation() {
+		return courseInformation;
+	}
+
+	public void setCourseInformation(CourseInformation courseInformation) {
+		this.courseInformation = courseInformation;
 	}
 
 }

@@ -47,10 +47,10 @@ public class CourseAssessment {
 
 	@OneToMany(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "midSemesterReview_id")
-	private Set<SemesterReview> midSemesterReview;
+	private Set<SemesterReview> midSemesterReviews;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set<SemesterReview> endSemesterReview;
+	private Set<SemesterReview> endSemesterReviews;
 
 	public Cafs1Info getCafs1Info() {
 		return cafs1Info;
@@ -68,20 +68,20 @@ public class CourseAssessment {
 		this.cafs2Info = cafs2Info;
 	}
 
-	public Set<SemesterReview> getMidSemesterReview() {
-		return midSemesterReview;
+	public Set<SemesterReview> getMidSemesterReviews() {
+		return midSemesterReviews;
 	}
 
-	public void setMidSemesterReview(Set<SemesterReview> midSemesterReview) {
-		this.midSemesterReview = midSemesterReview;
+	public void setMidSemesterReviews(Set<SemesterReview> midSemesterReview) {
+		this.midSemesterReviews = midSemesterReview;
 	}
 
-	public Set<SemesterReview> getEndSemesterReview() {
-		return endSemesterReview;
+	public Set<SemesterReview> getEndSemesterReviews() {
+		return endSemesterReviews;
 	}
 
-	public void setEndSemesterReview(Set<SemesterReview> endSemesterReview) {
-		this.endSemesterReview = endSemesterReview;
+	public void setEndSemesterReviews(Set<SemesterReview> endSemesterReview) {
+		this.endSemesterReviews = endSemesterReview;
 	}
 
 	public long getId() {
@@ -123,9 +123,4 @@ public class CourseAssessment {
 	public void setCourseSLOs(CourseSLOs courseSLOs) {
 		this.courseSLOs = courseSLOs;
 	}
-
-//	public courseInformation: CourseInformation, public courseSLOs: CourseSLOs, public cafs1Info: Cafs1Info, public cafs2Info: Cafs2Info,
-//    public cafs3Info: Cafs3Info, public cafs6Info: Cafs6Info,
-//    public midSemesterReviews: Array<SemesterReview>, public endSemesterReviews: Array<SemesterReview>
-
 }

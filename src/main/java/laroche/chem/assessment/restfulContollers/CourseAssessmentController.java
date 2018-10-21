@@ -26,11 +26,15 @@ public class CourseAssessmentController {
 	@Autowired
 	private CourseInformationRepository courseInformationRepository;
 
+	@Autowired
+	private StudentRepository studentRepository;
+
 	@GetMapping("/courseAssessment/{courseId}")
 	public CourseAssessment getCourseAssessment(@PathVariable long courseId) {
 		Optional<CourseInformation> courseInformation = courseInformationRepository.findById(courseId);
 		if (courseInformation.isPresent()) {
-			Optional<CourseAssessment> courseAssessment = courseAssessmentRepository.findById(courseId);
+			Optional<CourseAssessment> courseAssessment = courseAssessmentRepository
+					.findByCourseInformation(courseInformation.get());
 			if (courseAssessment.isPresent()) {
 				return courseAssessment.get();
 			}
@@ -41,13 +45,24 @@ public class CourseAssessmentController {
 	@PutMapping("/courseAssessment")
 	public long updateCourseAssessment(@RequestBody CourseAssessment courseAssessment) {
 
-		if (courseAssessment.getId() == 0) {
+		if (courseAssessment.getId() <= 0) {
 			Optional<CourseInformation> courseInformation = courseInformationRepository
 					.findById(courseAssessment.getCourseInformation().getId());
 			if (courseInformation.isPresent()) {
 				courseAssessment.setCourseInformation(courseInformation.get());
 			}
-			courseAssessmentRepository.save(courseAssessment);
+
+			for (SemesterReview review : courseAssessment.getEndSemesterReviews()) {
+				review.setStudent(studentRepository.findById(review.getStudent().getId()).get());
+				review.setCourseInformation(courseAssessment.getCourseInformation());
+			}
+
+			for (SemesterReview review : courseAssessment.getMidSemesterReviews()) {
+				review.setStudent(studentRepository.findById(review.getStudent().getId()).get());
+				review.setCourseInformation(courseAssessment.getCourseInformation());
+			}
+
+			courseAssessment = courseAssessmentRepository.save(courseAssessment);
 			return courseAssessment.getId();
 		}
 
@@ -64,58 +79,72 @@ public class CourseAssessmentController {
 			editable.get().setCafs6Info(courseAssessment.getCafs6Info());
 			editable.get().setCourseInformation(courseAssessment.getCourseInformation());
 			editable.get().setCourseSLOs(courseAssessment.getCourseSLOs());
-			editable.get().setEndSemesterReview(courseAssessment.getEndSemesterReview());
-			editable.get().setMidSemesterReview(courseAssessment.getMidSemesterReview());
+			editable.get().setEndSemesterReviews(courseAssessment.getEndSemesterReviews());
+			editable.get().setMidSemesterReviews(courseAssessment.getMidSemesterReviews());
 
-			courseAssessmentRepository.save(editable.get());
-			return editable.get().getId();
+			CourseAssessment assessment = courseAssessmentRepository.save(editable.get());
+			return assessment.getId();
 		} else {
 			return -1;
 		}
 	}
 
-	@PutMapping("/endSemesterReview/{courseAssessmentId}")
-	public ResponseEntity<Void> updateEndSemeterReview(@PathVariable long courseAssessmentId,
-			@RequestBody SemesterReview semesterReview) {
-
-		Optional<CourseAssessment> editable = courseAssessmentRepository.findById(courseAssessmentId);
-
-		if (semesterReview.getId() == 0) {
-			editable.get().getEndSemesterReview().add(semesterReview);
-		} else {
-			for (SemesterReview review : editable.get().getEndSemesterReview()) {
-				if (semesterReview.getId() == review.getId()) {
-					review.setGrade(semesterReview.getGrade());
-					review.setSemesterInstructorInteractions(semesterReview.getSemesterInstructorInteractions());
-					review.setSemesterInstructorNotes(semesterReview.getSemesterInstructorNotes());
-					review.setSemesterLearningIssues(semesterReview.getSemesterLearningIssues());
-					break;
-				}
-			}
-		}
-		courseAssessmentRepository.save(editable.get());
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
-
-	@PutMapping("/midSemesterReview/{courseAssessmentId}")
-	public ResponseEntity<Void> updateMidSemeterReview(@PathVariable long courseAssessmentId,
-			@RequestBody SemesterReview semesterReview) {
-
-		Optional<CourseAssessment> editable = courseAssessmentRepository.findById(courseAssessmentId);
-
-		if (semesterReview.getId() == 0) {
-			editable.get().getMidSemesterReview().add(semesterReview);
-		} else {
-			for (SemesterReview review : editable.get().getMidSemesterReview()) {
-				if (semesterReview.getId() == review.getId()) {
-					review.setSemesterInstructorInteractions(semesterReview.getSemesterInstructorInteractions());
-					review.setSemesterInstructorNotes(semesterReview.getSemesterInstructorNotes());
-					review.setSemesterLearningIssues(semesterReview.getSemesterLearningIssues());
-					break;
-				}
-			}
-		}
-		courseAssessmentRepository.save(editable.get());
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
+//	@PutMapping("/endSemesterReview/{courseAssessmentId}")
+//	public ResponseEntity<Void> updateEndSemeterReview(@PathVariable long courseAssessmentId,
+//			@RequestBody SemesterReview semesterReview) {
+//
+//		Optional<CourseAssessment> editable = courseAssessmentRepository.findById(courseAssessmentId);
+//
+//		if (semesterReview.getId() == 0) {
+//			semesterReview.setStudent(studentRepository.findById(semesterReview.getStudent().getId()).get());
+//			semesterReview.setCourseInformation(
+//					courseInformationRepository.findById(editable.get().getCourseInformation().getId()).get());
+//			editable.get().getEndSemesterReviews().add(semesterReview);
+//		} else {
+//			for (SemesterReview review : editable.get().getEndSemesterReviews()) {
+//				if (semesterReview.getId() == review.getId()) {
+//					review.setGrade(semesterReview.getGrade());
+//					review.setSemesterInstructorInteractions(semesterReview.getSemesterInstructorInteractions());
+//					review.setSemesterInstructorNotes(semesterReview.getSemesterInstructorNotes());
+//					review.setSemesterLearningIssues(semesterReview.getSemesterLearningIssues());
+//
+//					review.setStudent(studentRepository.findById(semesterReview.getStudent().getId()).get());
+//					review.setCourseInformation(
+//							courseInformationRepository.findById(semesterReview.getCourseInformation().getId()).get());
+//					break;
+//				}
+//			}
+//		}
+//		courseAssessmentRepository.save(editable.get());
+//		return ResponseEntity.status(HttpStatus.OK).build();
+//	}
+//
+//	@PutMapping("/midSemesterReview/{courseAssessmentId}")
+//	public ResponseEntity<Void> updateMidSemeterReview(@PathVariable long courseAssessmentId,
+//			@RequestBody SemesterReview semesterReview) {
+//
+//		Optional<CourseAssessment> editable = courseAssessmentRepository.findById(courseAssessmentId);
+//
+//		if (semesterReview.getId() <= 0) {
+//			semesterReview.setStudent(studentRepository.findById(semesterReview.getStudent().getId()).get());
+//			semesterReview.setCourseInformation(
+//					courseInformationRepository.findById(editable.get().getCourseInformation().getId()).get());
+//			editable.get().getMidSemesterReviews().add(semesterReview);
+//		} else {
+//			for (SemesterReview review : editable.get().getMidSemesterReviews()) {
+//				if (semesterReview.getId() == review.getId()) {
+//					review.setSemesterInstructorInteractions(semesterReview.getSemesterInstructorInteractions());
+//					review.setSemesterInstructorNotes(semesterReview.getSemesterInstructorNotes());
+//					review.setSemesterLearningIssues(semesterReview.getSemesterLearningIssues());
+//
+//					review.setStudent(studentRepository.findById(semesterReview.getStudent().getId()).get());
+//					review.setCourseInformation(
+//							courseInformationRepository.findById(semesterReview.getCourseInformation().getId()).get());
+//					break;
+//				}
+//			}
+//		}
+//		courseAssessmentRepository.save(editable.get());
+//		return ResponseEntity.status(HttpStatus.OK).build();
+//	}
 }
