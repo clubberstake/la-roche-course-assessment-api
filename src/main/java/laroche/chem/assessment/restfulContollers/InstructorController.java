@@ -1,5 +1,6 @@
 package laroche.chem.assessment.restfulContollers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class InstructorController {
 
 	@Autowired
 	private InstructorRepository instructorRepository;
+
+	@GetMapping("/instructor")
+	public List<Instructor> getInstuctorList() {
+		return instructorRepository.findAll();
+	}
 
 	@GetMapping("/instructor/{emailAddress}")
 	public Instructor getInstructor(@PathVariable String emailAddress) {

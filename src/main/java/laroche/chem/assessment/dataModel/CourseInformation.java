@@ -24,7 +24,7 @@ public class CourseInformation {
 
 	private String semester;
 	private String year;
-	private String courseNumberAndSection;
+	private String courseNumberSection;
 	private String courseTitle;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -55,12 +55,12 @@ public class CourseInformation {
 		this.semester = semester;
 	}
 
-	public String getcourseNumberAndSection() {
-		return courseNumberAndSection;
+	public String getCourseNumberSection() {
+		return courseNumberSection;
 	}
 
-	public void setcourseNumberAndSection(String courseNumberAndSection) {
-		this.courseNumberAndSection = courseNumberAndSection;
+	public void setCourseNumberSection(String courseNumberSection) {
+		this.courseNumberSection = courseNumberSection;
 	}
 
 	public String getCourseTitle() {
