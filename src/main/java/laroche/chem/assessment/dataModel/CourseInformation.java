@@ -26,6 +26,7 @@ public class CourseInformation {
 	private String year;
 	private String courseNumberSection;
 	private String courseTitle;
+	private boolean archived;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "instructor_id")
@@ -85,5 +86,13 @@ public class CourseInformation {
 
 	public void setYear(String year) {
 		this.year = year;
+	}
+
+	public boolean isArchived() {
+		return archived;
+	}
+
+	public void setArchived(boolean archived) {
+		this.archived = archived;
 	}
 }

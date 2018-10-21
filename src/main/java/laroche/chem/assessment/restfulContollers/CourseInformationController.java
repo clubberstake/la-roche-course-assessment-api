@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,6 +75,19 @@ public class CourseInformationController {
 			courseInformationRepository.save(courseInformation);
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
+	}
+
+	@PostMapping("/courseInformation/archive")
+	public boolean archiveCourseInformation(@RequestBody CourseInformation courseInformation) {
+
+		Optional<CourseInformation> course = courseInformationRepository.findById(courseInformation.getId());
+		if (course.isPresent()) {
+			course.get().setArchived(true);
+			courseInformationRepository.save(course.get());
+			return true;
+		}
+
+		return false;
 	}
 
 	@DeleteMapping("/courseInformation/{id}")
