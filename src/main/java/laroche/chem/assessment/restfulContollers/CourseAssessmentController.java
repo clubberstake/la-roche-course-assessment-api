@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import laroche.chem.assessment.dataModel.CourseAssessment;
 import laroche.chem.assessment.dataModel.CourseInformation;
+import laroche.chem.assessment.dataModel.FileStorage;
 import laroche.chem.assessment.dataModel.SemesterReview;
 
 @RestController
@@ -49,7 +50,9 @@ public class CourseAssessmentController {
 			Optional<CourseInformation> courseInformation = courseInformationRepository
 					.findById(courseAssessment.getCourseInformation().getId());
 			if (courseInformation.isPresent()) {
+				FileStorage syllabus = courseAssessment.getCourseInformation().getSyllabus();
 				courseAssessment.setCourseInformation(courseInformation.get());
+				courseAssessment.getCourseInformation().setSyllabus(syllabus);
 			}
 
 			for (SemesterReview review : courseAssessment.getEndSemesterReviews()) {
@@ -71,7 +74,9 @@ public class CourseAssessmentController {
 			Optional<CourseInformation> courseInformation = courseInformationRepository
 					.findById(courseAssessment.getCourseInformation().getId());
 			if (courseInformation.isPresent()) {
+				FileStorage syllabus = courseAssessment.getCourseInformation().getSyllabus();
 				editable.get().setCourseInformation(courseInformation.get());
+				editable.get().getCourseInformation().setSyllabus(syllabus);
 			}
 			editable.get().setCafs1Info(courseAssessment.getCafs1Info());
 			editable.get().setCafs2Info(courseAssessment.getCafs2Info());
@@ -79,6 +84,17 @@ public class CourseAssessmentController {
 			editable.get().setCafs6Info(courseAssessment.getCafs6Info());
 			editable.get().setCourseInformation(courseAssessment.getCourseInformation());
 			editable.get().setCourseSLOs(courseAssessment.getCourseSLOs());
+
+			for (SemesterReview review : courseAssessment.getEndSemesterReviews()) {
+				review.setStudent(studentRepository.findById(review.getStudent().getId()).get());
+				review.setCourseInformation(courseAssessment.getCourseInformation());
+			}
+
+			for (SemesterReview review : courseAssessment.getMidSemesterReviews()) {
+				review.setStudent(studentRepository.findById(review.getStudent().getId()).get());
+				review.setCourseInformation(courseAssessment.getCourseInformation());
+			}
+
 			editable.get().setEndSemesterReviews(courseAssessment.getEndSemesterReviews());
 			editable.get().setMidSemesterReviews(courseAssessment.getMidSemesterReviews());
 
