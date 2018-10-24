@@ -1,5 +1,7 @@
 package laroche.chem.assessment.restfulContollers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import laroche.chem.assessment.dataModel.SemesterReview;
 import laroche.chem.assessment.dataModel.Student;
 
 @RestController
@@ -19,6 +22,9 @@ public class StudentController {
 
 	@Autowired
 	private StudentRepository studentRepository;
+
+	@Autowired
+	private SemesterReviewRepository semseterReviewRepository;
 
 	@GetMapping("/student/{emailAddress}")
 	public Student getStudent(@PathVariable String emailAddress) {
@@ -69,5 +75,56 @@ public class StudentController {
 		}
 
 		return studentId;
+	}
+
+	@GetMapping("/student/semesterReviews/{studentId}")
+	public ArrayList<StudentSemesterReviewsByCourse> getStudentSemesterReviews(@PathVariable long studentId) {
+
+		Optional<Student> student = studentRepository.findById(studentId);
+		if (!student.isPresent()) {
+			return null;
+		}
+
+		List<SemesterReview> semesterReviews = semseterReviewRepository.findAllByStudent(student.get());
+
+		if (semesterReviews.isEmpty()) {
+			return null;
+		}
+
+		ArrayList<StudentSemesterReviewsByCourse> studentSemesterReviews = new ArrayList<StudentSemesterReviewsByCourse>();
+
+		for (SemesterReview review : semesterReviews) {
+
+			if (!containsReview(studentSemesterReviews, review.getCourseInformation().getId())) {
+				StudentSemesterReviewsByCourse courseReview = new StudentSemesterReviewsByCourse();
+				courseReview.setCourseInformation(review.getCourseInformation());
+				courseReview.setSemesterReviews(new ArrayList<SemesterReview>());
+				courseReview.getSemesterReviews().add(review);
+				studentSemesterReviews.add(courseReview);
+				continue;
+			}
+
+			for (StudentSemesterReviewsByCourse courseReview : studentSemesterReviews) {
+				if (courseReview.getCourseInformation().getId() == review.getCourseInformation().getId()) {
+					if (courseReview.getSemesterReviews().isEmpty()) {
+						courseReview.setSemesterReviews(new ArrayList<SemesterReview>());
+						courseReview.getSemesterReviews().add(review);
+					}
+					courseReview.getSemesterReviews().add(review);
+					break;
+				}
+			}
+		}
+
+		return studentSemesterReviews;
+	}
+
+	private boolean containsReview(ArrayList<StudentSemesterReviewsByCourse> studentSemesterReviews, long reviewId) {
+		for (StudentSemesterReviewsByCourse courseReview : studentSemesterReviews) {
+			if (courseReview.getCourseInformation().getId() == reviewId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
